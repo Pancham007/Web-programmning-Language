@@ -1,0 +1,39 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<form>
+	<div>
+		<label>Enter keyword</label>
+		<input type="text" name="search" id="search" value="" />
+		<input type="button" name="submit" id="searchBtn" value="Search" />
+	</div>					
+</form>
+<div id="result"></div>
+<script>
+$(document).ready(function(){
+	$('#searchBtn').click(function() { 
+		var searchVal = $('#search').val();
+		$.ajax({
+			type: 'GET',
+			url: 'getFlickr.php',
+			data: 'search=' + searchVal,
+			dataType: 'html',
+			beforeSend: function() {
+				$('#result').html('<img src="loading.gif" alt="loading..." />');
+				if(!searchVal[0]) {
+					$('#result').html('<p>Please enter a keyword as search value.</p>');   	
+					return false;
+				} 	
+			},
+			success: function(response) {
+				$('#result').html(response);
+				tb_init('a.thickbox');
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>
